@@ -4,6 +4,8 @@ mod text;
 
 pub use json::JsonReporter;
 pub use text::TextReporter;
+pub use json::build_serde_report;
+pub use json::Report;
 
 use crate::report::BenchReport;
 

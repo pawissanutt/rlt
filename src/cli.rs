@@ -104,7 +104,7 @@ use crate::{
     clock::Clock,
     collector::{ReportCollector, SilentCollector, TuiCollector},
     reporter::{BenchReporter, JsonReporter, TextReporter},
-    runner::{BenchOpts, BenchSuite, Runner},
+    runner::{BenchOpts, BenchSuite, Runner}, BenchReport,
 };
 
 #[derive(Parser, Clone, Copy, Debug)]
@@ -211,7 +211,7 @@ pub enum ReportFormat {
 }
 
 /// Run the benchmark with the given CLI options and benchmark suite.
-pub async fn run<BS>(cli: BenchCli, bench_suite: BS) -> anyhow::Result<()>
+pub async fn run<BS>(cli: BenchCli, bench_suite: BS) -> anyhow::Result<BenchReport>
 where
     BS: BenchSuite + Send + Sync + 'static,
     BS::WorkerState: Send + Sync + 'static,
@@ -244,7 +244,8 @@ where
         ReportFormat::Json => &JsonReporter,
     };
 
-    reporter.print(&mut stdout(), &report.await??)?;
+    let report = report.await??;
+    reporter.print(&mut stdout(), &report)?;
 
-    Ok(())
+    Ok(report)
 }

@@ -97,5 +97,6 @@ impl BenchSuite for DBBench {
 #[tokio::main]
 async fn main() -> Result<()> {
     let bs: DBBench = DBBench::parse();
-    rlt::cli::run(bs.bench_opts, bs).await
+    rlt::cli::run(bs.bench_opts, bs).await?;
+    Ok(())
 }

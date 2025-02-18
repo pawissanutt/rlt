@@ -53,5 +53,6 @@ async fn main() -> Result<()> {
         }
     }
 
-    rlt::cli::run(opt, SimpleBench).await
+    rlt::cli::run(opt, SimpleBench).await?;
+    Ok(())
 }
